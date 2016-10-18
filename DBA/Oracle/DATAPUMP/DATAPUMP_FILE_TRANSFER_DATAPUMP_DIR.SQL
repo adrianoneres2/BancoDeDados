@@ -6,7 +6,7 @@ SELECT * FROM V$INSTANCE;
 
 SET DEFINE OFF;
 --- O DATABASE LINK É USADO PARA CONECTAR OS DOIS SERVIDORES.
-CREATE public DATABASE LINK DBL_AMAZON_RIO CONNECT TO master IDENTIFIED BY a123456 USING '(DESCRIPTION =
+CREATE public DATABASE LINK DBL_AMAZON_RIO CONNECT TO master IDENTIFIED BY "*ay&F6WV$K" USING '(DESCRIPTION =
     (ADDRESS_LIST =
       (LOAD_BALANCE = ON)
       (FAILOVER = ON)
@@ -36,9 +36,9 @@ BEGIN
 
   DBMS_FILE_TRANSFER.put_file(
         source_directory_object       =>  'DATA_PUMP_DIR',
-        source_file_name              =>  'DBPLATAFORMA_31.dmp',
+        source_file_name              =>  'DBCNES.dmp',
         destination_directory_object  =>  'DATA_PUMP_DIR',
-        destination_file_name         =>  'DBPLATAFORMA_31.dmp',
+        destination_file_name         =>  'DBCNES.dmp',
         destination_database          =>  'DBL_AMAZON_RIO');
         
     dbms_output.put_line('Fim : '||SYSDATE);
@@ -72,3 +72,27 @@ BEGIN
 END;
 /
 
+
+
+--- O DATABASE LINK É USADO PARA CONECTAR OS DOIS SERVIDORES.
+CREATE DATABASE LINK REMOTE_DEVELMS CONNECT TO system IDENTIFIED BY msdeveldf02 USING 'DEVELMS';
+
+--------- PEGA O ARQUIVO DO SERVIDOR REMOTO NO DIRETORIO DO DATAPUMP E JOGA NO SERVIDOR LOCAL DADAUMPDIR
+SET SERVEROUTPUT ON;
+BEGIN
+  dbms_output.put_line('Inicio : '||SYSDATE);
+
+  DBMS_FILE_TRANSFER.get_file(
+        source_directory_object       =>  'IMPORTA',
+        source_file_name              =>  'DBPLATAFORMA_PROD.dmp',
+        source_database               =>  'REMOTE_DEVELMS',
+        destination_directory_object  =>  'DATA_PUMP_DIR',
+        destination_file_name         =>  'DBPLATAFORMA_PROD.dmp');
+        
+  dbms_output.put_line('Fim : '||SYSDATE);
+    
+  exception when others then
+    dbms_output.put_line('Erro! '||'The error code is ' || SQLCODE || '- ' || SQLERRM);
+        
+END;
+/
