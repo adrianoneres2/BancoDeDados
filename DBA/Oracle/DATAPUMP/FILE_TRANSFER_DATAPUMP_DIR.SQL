@@ -96,3 +96,8 @@ BEGIN
         
 END;
 /
+
+---- LISTA OS ARQUIVOS NO DIRETÓRIO REMOTO DO BANCO DE DADOSS.
+select * from table(RDSADMIN.RDS_FILE_UTIL.LISTDIR('DATA_PUMP_DIR')) order by mtime;
+---- APAGA ARQUIVOS DO DESTINO (SERVIDOR REMOTO).
+exec utl_file.fremove('DATA_PUMP_DIR','DBSCPA.dmp');
