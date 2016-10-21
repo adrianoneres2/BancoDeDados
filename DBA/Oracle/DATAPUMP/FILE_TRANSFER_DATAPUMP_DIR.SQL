@@ -29,7 +29,8 @@ CREATE public DATABASE LINK DBL_AMAZON_RIO CONNECT TO master IDENTIFIED BY "*ay&
 
 SET DEFINE OFF;
 --------- JOGA O ARQUIVO DO SERVIDOR LOCAL PARA DIRETORIO DATAPUMP DO SERVIDOR REMOTO.
-SET SERVEROUTPUT ON;
+SET SERVEROUTPUT ON
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY HH24:MI:SS';
 BEGIN
 
   dbms_output.put_line('Inicio : '||SYSDATE);
@@ -54,15 +55,16 @@ CREATE DATABASE LINK REMOTE_FSWDEVEL CONNECT TO system IDENTIFIED BY dbactis USI
 
 --------- PEGA O ARQUIVO DO SERVIDOR REMOTO NO DIRETORIO DO DATAPUMP E JOGA NO SERVIDOR LOCAL DADAUMPDIR
 SET SERVEROUTPUT ON;
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY HH24:MI:SS';
 BEGIN
   dbms_output.put_line('Inicio : '||SYSDATE);
 
   DBMS_FILE_TRANSFER.get_file(
         source_directory_object       =>  'DIR_DUMP',
-        source_file_name              =>  'DBPLATAFORMA_PROD.dmp',
+        source_file_name              =>  'dbsisaguams_contats.log',
         source_database               =>  'REMOTE_FSWDEVEL',
         destination_directory_object  =>  'DATA_PUMP_DIR',
-        destination_file_name         =>  'DBPLATAFORMA_PROD.dmp');
+        destination_file_name         =>  'dbsisaguams_contats.log');
         
   dbms_output.put_line('Fim : '||SYSDATE);
     
@@ -79,6 +81,7 @@ CREATE DATABASE LINK REMOTE_DEVELMS CONNECT TO system IDENTIFIED BY msdeveldf02 
 
 --------- PEGA O ARQUIVO DO SERVIDOR REMOTO NO DIRETORIO DO DATAPUMP E JOGA NO SERVIDOR LOCAL DADAUMPDIR
 SET SERVEROUTPUT ON;
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY HH24:MI:SS';
 BEGIN
   dbms_output.put_line('Inicio : '||SYSDATE);
 
