@@ -51,7 +51,10 @@ END;
 /
 
 --- O DATABASE LINK É USADO PARA CONECTAR OS DOIS SERVIDORES.
+---DROP DATABASE LINK REMOTE_FSWDEVEL
 CREATE DATABASE LINK REMOTE_FSWDEVEL CONNECT TO system IDENTIFIED BY dbactis USING 'FSWDEVEL';
+
+select * from dual@REMOTE_FSWDEVEL;
 
 --------- PEGA O ARQUIVO DO SERVIDOR REMOTO NO DIRETORIO DO DATAPUMP E JOGA NO SERVIDOR LOCAL DADAUMPDIR
 SET SERVEROUTPUT ON;
@@ -61,10 +64,10 @@ BEGIN
 
   DBMS_FILE_TRANSFER.get_file(
         source_directory_object       =>  'DIR_DUMP',
-        source_file_name              =>  'dbsisaguams_contats.log',
+        source_file_name              =>  'adriano.dmp',
         source_database               =>  'REMOTE_FSWDEVEL',
         destination_directory_object  =>  'DATA_PUMP_DIR',
-        destination_file_name         =>  'dbsisaguams_contats.log');
+        destination_file_name         =>  'adriano.dmp');
         
   dbms_output.put_line('Fim : '||SYSDATE);
     
@@ -73,6 +76,7 @@ BEGIN
         
 END;
 /
+
 
 
 
