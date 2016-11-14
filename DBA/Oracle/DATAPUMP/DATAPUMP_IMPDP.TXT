@@ -1,0 +1,14 @@
+---IMPORTAR
+impdp master/a123456@MASTER-AMAZON-RIO
+DIRECTORY=DATA_PUMP_DIR 
+DUMPFILE=DUMP_DBTodos3.dmp 
+logfile=impdp_DUMP_DBTodos3.log
+schemas=dbgeral, dbpessoa, dbplataformabr
+REMAP_TABLESPACE=USERS:TD_DBGERAL, TD_DADOS:TD_DBPESSOA
+parallel=4
+
+---EXPORTAR
+expdp system@fswdevel schemas=DBPLATAFORMABR_31 directory=DIR_DUMP dumpfile=DBPLATAFORMA_31.dmp logfile=DBPLATAFORMA_31.log
+
+
+expdp system/msdeveldf02@develms schemas=DBCNES directory=IMPORTA dumpfile=DBCNES.dmp logfile=DBCNES2.log
